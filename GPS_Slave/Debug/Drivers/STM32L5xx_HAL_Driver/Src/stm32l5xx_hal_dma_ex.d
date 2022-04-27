@@ -27,7 +27,9 @@ Drivers/STM32L5xx_HAL_Driver/Src/stm32l5xx_hal_dma_ex.o: \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_i2c_ex.h \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_icache.h \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_pwr.h \
- ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_pwr_ex.h
+ ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_pwr_ex.h \
+ ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_uart.h \
+ ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_uart_ex.h
 
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal.h:
 
@@ -84,3 +86,7 @@ Drivers/STM32L5xx_HAL_Driver/Src/stm32l5xx_hal_dma_ex.o: \
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_pwr.h:
 
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_pwr_ex.h:
+
+../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_uart.h:
+
+../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal_uart_ex.h:

@@ -60,8 +60,8 @@ all: main-build
 main-build: GPS_Slave.elf secondary-outputs
 
 # Tool invocations
-GPS_Slave.elf: $(OBJS) $(USER_OBJS) C:\Users\DMQua\OneDrive\Studying\stm\Projects\GPS_Slave\STM32L552ZETXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "GPS_Slave.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"C:\Users\DMQua\OneDrive\Studying\stm\Projects\GPS_Slave\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="GPS_Slave.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+GPS_Slave.elf: $(OBJS) $(USER_OBJS) D:\Clock_Synchronization\GPS_Slave\STM32L552ZETXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "GPS_Slave.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"D:\Clock_Synchronization\GPS_Slave\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="GPS_Slave.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

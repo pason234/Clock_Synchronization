@@ -1,0 +1,24 @@
+!SESSION 2022-04-27 19:31:53.514 -----------------------------------------------
+eclipse.buildId=Version 1.8.0
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2022-04-27 19:32:14.659
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-04-27 19:32:14.755
+!MESSAGE Log4j initialized with config file D:\Clock_Synchronization\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-04-27 19:32:18.024
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-04-27 19:32:42.153
+!MESSAGE Indexed 'GPS_Slave' (26 sources, 110 headers) in 5.8 sec: 10,885 declarations; 45,754 references; 7 unresolved inclusions; 74 syntax errors; 201 unresolved names (0.35%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-04-27 19:32:50.851
+!MESSAGE Indexed 'Slave_NRF24_Receiver' (27 sources, 111 headers) in 5.05 sec: 11,215 declarations; 51,011 references; 3 unresolved inclusions; 74 syntax errors; 178 unresolved names (0.29%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-04-27 19:32:58.450
+!MESSAGE Indexed 'TestBoar3_M33' (27 sources, 108 headers) in 4.29 sec: 11,022 declarations; 50,899 references; 3 unresolved inclusions; 74 syntax errors; 178 unresolved names (0.29%)

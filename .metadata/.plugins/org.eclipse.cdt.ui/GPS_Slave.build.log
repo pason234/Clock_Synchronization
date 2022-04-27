@@ -1,0 +1,10 @@
+19:36:06 **** Incremental Build of configuration Debug for project GPS_Slave ****
+make -j8 all 
+arm-none-eabi-size   GPS_Slave.elf 
+   text	   data	    bss	    dec	    hex	filename
+  26896	    132	   2028	  29056	   7180	GPS_Slave.elf
+Finished building: default.size.stdout
+ 
+
+19:36:06 Build Finished. 0 errors, 0 warnings. (took 345ms)
+

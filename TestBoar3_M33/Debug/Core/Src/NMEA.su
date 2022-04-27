@@ -1,0 +1,2 @@
+NMEA.c:31:5:decodeGGA	72	static
+NMEA.c:196:5:decodeRMC	88	static

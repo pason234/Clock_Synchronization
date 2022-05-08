@@ -55,7 +55,6 @@ static void MX_SPI1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /**
@@ -92,54 +91,39 @@ int main(void)
   NRF24_Init();
   uint8_t TxAddress[] = {0xEE,0xDD,0xCC,0xBB,0xAA};
   NRF24_TxMode(TxAddress, 10);
-  //Ringbuf_init();
+  //HAL_TIM_Base_Start(&htim2);
+  //HAL_TIM_Base_Stop(&htim2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uwTick=1000;
-  uint32_t tmp_uwTick = uwTick;
-  uint8_t send = 1;
-  uint8_t init = 0;
-  uint8_t cmdtosend = 0;
-  //char TxData[10];
-  uint8_t TxData[4];
+  uint32_t tmp_uwTick;
+  uint8_t cmdtosend = 0, TxData[4];
+
+  HAL_Delay(500);
+  CS_Select();
+  cmdtosend = W_TX_PAYLOAD;
+  HAL_SPI_Transmit(&hspi1, &cmdtosend, 1, 100);
+  for (int i=0; i<4; i++){
+  	TxData[i] = ((uwTick+2) >> 8*i) & 0b11111111;
+  }
+  tmp_uwTick=uwTick+2;
+  while(uwTick!=tmp_uwTick);
+  HAL_SPI_Transmit(&hspi1, TxData, 4, 1);
+  CS_UnSelect();
+  HAL_Delay(1);
+  uint8_t fifostatus = nrf24_ReadReg(FIFO_STATUS);
+  if ((fifostatus&(1<<4)) && (!(fifostatus&(1<<3)))){
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 1);
+	  cmdtosend = FLUSH_TX;
+	  nrfsendCmd(cmdtosend);
+	  nrf24_reset(FIFO_STATUS);
+  }
+
   while (1)
   {
-	  if (tmp_uwTick!=uwTick && send && init) {
-		  HAL_SPI_Transmit(&hspi1, TxData, 4, 1);
-		  CS_UnSelect();
-		  HAL_Delay(1);
-		  uint8_t fifostatus = nrf24_ReadReg(FIFO_STATUS);
-		  // check the fourth bit of FIFO_STATUS to know if the TX fifo is empty
-		  if ((fifostatus&(1<<4)) && (!(fifostatus&(1<<3)))){
-			  cmdtosend = FLUSH_TX;
-			  nrfsendCmd(cmdtosend);
-		  	  nrf24_reset (FIFO_STATUS);
-		  	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, 1);
-		  	  send = 0;
-		  	  HAL_Delay(2000);
-		  } else {
-			  HAL_Delay(1000);
-			  send = 1;
-			  init = 0;
-			  tmp_uwTick = uwTick;
-		  }
-	  }
-	  if (uwTick%1000==0) {
-		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);
-		  HAL_Delay(2);
-	  }
-	  if (tmp_uwTick!=uwTick && send && !init){ //this one in first
-		  CS_Select();
-		  cmdtosend = W_TX_PAYLOAD;
-		  HAL_SPI_Transmit(&hspi1, &cmdtosend, 1, 100);
-		  for (int i=0; i<4; i++){
-			  TxData[i] = ((uwTick+1) >> 8*i) & 0b11111111;
-		  }
-		  tmp_uwTick=uwTick; //wait for 1 milli to officialy send out
-		  init = 1; //init done, need to send out
-	  }
+	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);
+	  HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -170,8 +154,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 55;
+  RCC_OscInitStruct.PLL.PLLM = 2;
+  RCC_OscInitStruct.PLL.PLLN = 25;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -185,10 +169,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
   {
     Error_Handler();
   }
@@ -246,10 +230,14 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0|GPIO_PIN_1, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9, GPIO_PIN_RESET);
@@ -260,6 +248,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD0 PD1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB7 PB8 PB9 */
   GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;

@@ -139,7 +139,7 @@ void nrf24_reset(uint8_t REG)
 	nrf24_WriteReg(SETUP_RETR, 0x03);
 	nrf24_WriteReg(RF_CH, 0x02);
 	nrf24_WriteReg(RF_SETUP, 0x0E);
-	nrf24_WriteReg(STATUS, 0x00);
+	nrf24_WriteReg(STATUS, 0x0);
 	nrf24_WriteReg(OBSERVE_TX, 0x00);
 	nrf24_WriteReg(CD, 0x00);
 	uint8_t rx_addr_p0_def[5] = {0xE7, 0xE7, 0xE7, 0xE7, 0xE7};
@@ -174,7 +174,7 @@ void NRF24_Init (void)
 
 
 	// reset everything
-	nrf24_reset (0);
+	nrf24_reset(0);
 
 	nrf24_WriteReg(CONFIG, 0);  // will be configured later
 

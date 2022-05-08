@@ -60,8 +60,8 @@ all: main-build
 main-build: TestBoar3_M33.elf secondary-outputs
 
 # Tool invocations
-TestBoar3_M33.elf: $(OBJS) $(USER_OBJS) C:\Users\DMQua\OneDrive\Studying\stm\Projects\TestBoar3_M33\STM32L552ZETXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "TestBoar3_M33.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"C:\Users\DMQua\OneDrive\Studying\stm\Projects\TestBoar3_M33\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="TestBoar3_M33.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+TestBoar3_M33.elf: $(OBJS) $(USER_OBJS) D:\Clock_Synchronization\TestBoar3_M33\STM32L552ZETXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "TestBoar3_M33.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"D:\Clock_Synchronization\TestBoar3_M33\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="TestBoar3_M33.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -1,7 +1,76 @@
-19:36:06 **** Incremental Build of configuration Debug for project GPS_Slave ****
+15:34:48 **** Incremental Build of configuration Debug for project Slave_NRF24_Receiver ****
 make -j8 all 
-arm-none-eabi-size   GPS_Slave.elf 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L552xx -c -I../Core/Inc -I../Drivers/STM32L5xx_HAL_Driver/Inc -I../Drivers/STM32L5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L5xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:110:11: warning: unused variable 'test_status' [-Wunused-variable]
+  110 |   uint8_t test_status[1] = {0x07};
+      |           ^~~~~~~~~~~
+../Core/Src/main.c:109:12: warning: unused variable 'tmp' [-Wunused-variable]
+  109 |   uint32_t tmp=0;
+      |            ^~~
+../Core/Src/main.c:100:13: warning: unused variable 'RxData' [-Wunused-variable]
+  100 |     uint8_t RxData[4];
+      |             ^~~~~~
+arm-none-eabi-gcc -o "Slave_NRF24_Receiver.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\Clock_Synchronization\Slave_NRF24_Receiver\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="Slave_NRF24_Receiver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Slave_NRF24_Receiver.elf
+ 
+arm-none-eabi-size   Slave_NRF24_Receiver.elf 
+arm-none-eabi-objdump -h -S  Slave_NRF24_Receiver.elf  > "Slave_NRF24_Receiver.list"
+arm-none-eabi-objcopy  -O binary  Slave_NRF24_Receiver.elf  "Slave_NRF24_Receiver.bin"
    text	   data	    bss	    dec	    hex	filename
-  26896	    132	   2028	  29056	   7180	GPS_Slave.elf
+  14516	     20	   1748	  16284	   3f9c	Slave_NRF24_Receiver.elf
 Finished building: default.size.stdout
+ 
+Finished building: Slave_NRF24_Receiver.bin
+ 
+Finished building: Slave_NRF24_Receiver.list
+ 
+15:34:56 **** Incremental Build of configuration Debug for project Slave_NRF24_Receiver ****
+make -j8 all 
+arm-none-eabi-size   Slave_NRF24_Receiver.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14516	     20	   1748	  16284	   3f9c	Slave_NRF24_Receiver.elf
+Finished building: default.size.stdout
+ 
+15:36:26 **** Incremental Build of configuration Debug for project Slave_NRF24_Receiver ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L552xx -c -I../Core/Inc -I../Drivers/STM32L5xx_HAL_Driver/Inc -I../Drivers/STM32L5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L5xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:110:11: warning: unused variable 'test_status' [-Wunused-variable]
+  110 |   uint8_t test_status[1] = {0x07};
+      |           ^~~~~~~~~~~
+arm-none-eabi-gcc -o "Slave_NRF24_Receiver.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\Clock_Synchronization\Slave_NRF24_Receiver\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="Slave_NRF24_Receiver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Slave_NRF24_Receiver.elf
+ 
+arm-none-eabi-size   Slave_NRF24_Receiver.elf 
+arm-none-eabi-objdump -h -S  Slave_NRF24_Receiver.elf  > "Slave_NRF24_Receiver.list"
+arm-none-eabi-objcopy  -O binary  Slave_NRF24_Receiver.elf  "Slave_NRF24_Receiver.bin"
+   text	   data	    bss	    dec	    hex	filename
+  14716	     20	   1748	  16484	   4064	Slave_NRF24_Receiver.elf
+Finished building: default.size.stdout
+ 
+Finished building: Slave_NRF24_Receiver.bin
+ 
+Finished building: Slave_NRF24_Receiver.list
+ 
+15:38:08 **** Incremental Build of configuration Debug for project Slave_NRF24_Receiver ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L552xx -c -I../Core/Inc -I../Drivers/STM32L5xx_HAL_Driver/Inc -I../Drivers/STM32L5xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L5xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:110:11: warning: unused variable 'test_status' [-Wunused-variable]
+  110 |   uint8_t test_status[1] = {0x07};
+      |           ^~~~~~~~~~~
+arm-none-eabi-gcc -o "Slave_NRF24_Receiver.elf" @"objects.list"   -mcpu=cortex-m33 -T"D:\Clock_Synchronization\Slave_NRF24_Receiver\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="Slave_NRF24_Receiver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Slave_NRF24_Receiver.elf
+ 
+arm-none-eabi-size   Slave_NRF24_Receiver.elf 
+arm-none-eabi-objdump -h -S  Slave_NRF24_Receiver.elf  > "Slave_NRF24_Receiver.list"
+arm-none-eabi-objcopy  -O binary  Slave_NRF24_Receiver.elf  "Slave_NRF24_Receiver.bin"
+   text	   data	    bss	    dec	    hex	filename
+  14716	     20	   1748	  16484	   4064	Slave_NRF24_Receiver.elf
+Finished building: default.size.stdout
+ 
+Finished building: Slave_NRF24_Receiver.bin
+ 
+Finished building: Slave_NRF24_Receiver.list
  

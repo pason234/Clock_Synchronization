@@ -1,0 +1,10 @@
+14:41:28 **** Incremental Build of configuration Debug for project TestBoar3_M33 ****
+make -j8 all 
+arm-none-eabi-size   TestBoar3_M33.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14344	     20	   1748	  16112	   3ef0	TestBoar3_M33.elf
+Finished building: default.size.stdout
+ 
+
+14:41:28 Build Finished. 0 errors, 0 warnings. (took 233ms)
+

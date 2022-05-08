@@ -43,6 +43,8 @@
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
 
+TIM_HandleTypeDef htim2;
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -51,6 +53,7 @@ SPI_HandleTypeDef hspi1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -89,11 +92,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   	NRF24_Init();
     uint8_t RxAddress[] = {0x00,0xDD,0xCC,0xBB,0xAA};
     NRF24_RxMode(RxAddress, 10);
-    //uint8_t RxData[4];
     uint8_t RxData[4];
     uint8_t data[50];
     NRF24_ReadAll(data);
@@ -103,33 +106,100 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t tmp_uwTick = uwTick;
-  uint32_t count = 0;
-  uint32_t tmp;
-  uint8_t check = 0;
+  uint32_t tmp=0;
+  uint8_t test_status[1] = {0x07};
+
+  while (!isDataAvailable(2)){
+  }
+  NRF24_Receive(RxData);
+  	  for (int i=3; i>=0; i--){
+  	  	  tmp |= RxData[i]<<i*8;
+  	  }
+  	  uwTick = tmp+1;
+  /*
+  uint8_t data_isavailable=0;
+  nrf24_WriteReg(STATUS, (1<<6));
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+  while (1){
+	  HAL_SPI_Transmit(&hspi1, test_status, 1, 100);
+	  HAL_SPI_Receive(&hspi1, &data_isavailable, 1, 100);
+	  if ((data_isavailable&(1<<6))&&(data_isavailable&(2<<1))){
+	  	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+	  	NRF24_Receive(RxData);
+	  	for (int i=3; i>=0; i--){
+	  		tmp |= RxData[i]<<i*8;
+	  	}
+	  	uwTick = tmp+1;
+	  	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+	  	break;
+	  }
+	  //nrf24_WriteReg(STATUS, (1<<6));
+  }
+  */
+
+
   while (1)
   {
-	    //if (uwTick != tmp_uwTick) {
-	    //	HAL_Delay(1000);
-	    //	tmp_uwTick = uwTick;
-	    //	count = 0;
-	    //}
-	    //count++;
+	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);
+	  HAL_Delay(500);
+
+	  /*
+	  	if (uwTick%1000==0 && check_is_sync==1) {
+	  		if (count-1==tmp_count){
+	  			tmp_count=0;
+	  			HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);
+	  			HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_1);
+	  			HAL_Delay(1);
+	  		} else tmp_count++;
+	  	}
+	    if (uwTick != tmp_uwTick && check_is_sync==0) {
+	    	tmp_uwTick = uwTick;
+	    	count = 0;
+	    } else if (check_is_sync==0) count++;
+
+	  	if (check_is_sync==0){
+			uint8_t data_isavailable=0;
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+			HAL_SPI_Transmit(&hspi1, test_status, 1, 100);
+			HAL_SPI_Receive(&hspi1, &data_isavailable, 1, 100);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+
+			if ((data_isavailable&(1<<6))&&(data_isavailable&(2<<1))){
+				if (count<3000) {//as soon as data is available will check the time.
+					NRF24_Receive(RxData);
+					for (int i=3; i>=0; i--){
+						tmp |= RxData[i]<<i*8;
+					}
+					uwTick = tmp+2;
+					check_is_sync = 1;
+					HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+				}
+				nrf24_WriteReg(STATUS, (1<<6));
+			}
+	  	}*/
+
+
+
+	  /*
 	  if (isDataAvailable(2) == 1 && check==0) {
 			NRF24_Receive(RxData);
-			tmp = 0x0;
-			tmp |= RxData[3]<<24;
-			tmp |= RxData[2]<<16;
-			tmp |= RxData[1]<<8;
-			tmp |= RxData[0];
+			for (int i=3; i>=0; i--){
+				tmp |= RxData[i]<<i*8;
+			}
 			uwTick = tmp;
 			check = 1;
 			HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+			//tmp |= RxData[3]<<24;
+			//tmp |= RxData[2]<<16;
+			//tmp |= RxData[1]<<8;
+			//tmp |= RxData[0];
 		}
+
 	  if (uwTick%1000==0) {
 		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);
 		  HAL_Delay(4);
 	  }
+	  */
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -225,6 +295,51 @@ static void MX_SPI1_Init(void)
 }
 
 /**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 0;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 4294967295;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -236,10 +351,14 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0|GPIO_PIN_1, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9, GPIO_PIN_RESET);
@@ -250,6 +369,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD0 PD1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB7 PB8 PB9 */
   GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
